@@ -23,10 +23,7 @@ export default (dat) => {
     constructor(object, property) {
       super(object, property);
 
-      const _fileReader = new FileReader();
-      _fileReader.onloadend = onLoadEnd;
-
-      const _this = this;
+      this.__fileReader = new FileReader();
 
       this.__image = document.createElement('img');
       this.__imagePreview = document.createElement('img');
@@ -36,31 +33,50 @@ export default (dat) => {
       this.__imagePreview.src = object[property];
       this.__input.type = 'file';
 
-      dom.bind(this.__input, 'change', handleFileUpload);
-      dom.bind(_fileReader, 'onloadend', onLoadEnd);
+      dom.bind(this.__image, 'load', this.handleImageLoaded.bind(this));
+      dom.bind(this.__input, 'change', this.handleFileUpload.bind(this));
+      dom.bind(this.__fileReader, 'loadend', this.handleFileLoaded.bind(this));
 
       dom.addClass(this.__imagePreview, 'preview');
 
-      function handleFileUpload() {
-        const file = _this.__input.files[0];
+      this.domElement.appendChild(this.__imagePreview);
+      this.domElement.appendChild(this.__input);
+    }
+
+    handleFileUpload() {
+      const file = this.__input.files[0];
         if (!file) {
           return;
         }
+      this.__fileReader.readAsDataURL(file);
+    }
 
-        _fileReader.readAsDataURL(file);
+    handleFileLoaded() {
+      this.handleFilePath(this.__fileReader.result);
       }
 
-      function onLoadEnd() {
-        _this.__image.src = _fileReader.result;
-        _this.__imagePreview.src = _fileReader.result;
+    handleFilePath(filePath) {
+      if (!filePath) {
+        return;
+      }
+      this.__image.src = filePath;
+    }
 
-        if (_this.__onChange) {
-          _this.__onChange.call(_this, _this.__image);
+    handleImageLoaded() {
+      this.__imagePreview.src = this.__image.src;
+
+      if (this.__onChange) {
+        this.__onChange.call(this, this.__image);
         }
       }
 
-      this.domElement.appendChild(this.__imagePreview);
-      this.domElement.appendChild(this.__input);
+    updateDisplay() {
+      if (this.isModified()) {
+        const newValue = this.getValue();
+        this.handleFilePath(newValue);
+        this.initialValue = newValue;
+      }
+      return super.updateDisplay();
     }
   }
 
