@@ -1,0 +1,39 @@
+{
+  "name": "dat.gui.image",
+  "version": "1.0.0",
+  "description": "Plugin to give you another GUI function called",
+  "main": "dist/dat.gui.image.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p && uglifyjs -c -m -o dist/dat.gui.image.min.js -- dist/dat.gui.image.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jeremboo/dat.gui.image.git"
+  },
+  "keywords": [
+    "gui",
+    "dat.gui",
+    "creativecoding",
+    "image",
+    "npm"
+  ],
+  "author": "Jérémie Boulay <jeremi.boulay@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jeremboo/dat.gui.image/issues"
+  },
+  "homepage": "https://github.com/Jeremboo/dat.gui.image#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.5.0",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.1.3",
+    "uglify-js": "^3.8.1",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}

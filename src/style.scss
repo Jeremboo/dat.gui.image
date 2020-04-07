@@ -1,0 +1,22 @@
+.dg .cr.image {
+  position: relative;
+  height: auto;
+  border-left: 3px solid #2fa1d6;
+
+  .preview {
+    display: block;
+    width: calc(100% + 5px);
+    padding: 4px 0;
+    margin-left: -5px;
+  }
+
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,10 @@
+### OSX ###
+.DS_Store
+
+# Thumbnails
+._*
+
+
+# NPM
+node_modules/
+npm-debug.log
