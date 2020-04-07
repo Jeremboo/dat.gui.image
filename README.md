@@ -1,9 +1,10 @@
 # dat.GUI.image
 
-Plugin to give you another GUI function called `addImage()`. It allows you to update an image in real time without recompiling your code or add an image into your project.
+Plugin to give you another GUI function called `addImage()`.
 
-It's really useful for instance to quickly try multiple textures during prototyping!
-Or to set up some good tools for designers.
+It allows you to update new images in real time without recompiling your code or add them into your project.
+
+Really useful to quickly try multiple images/textures/brushes during prototyping!
 
 <p align="center">
     <img alt="Creative Coding TO - Demo" src="https://github.com/Jeremboo/dat.gui.image/blob/master/preview.gif?raw=true">
@@ -34,6 +35,10 @@ gui.addImage(PROPS, 'texturePath').onChange((image) => {
   body.append(image);
 });
 ```
+
+That's all! You will have a preview of the image into the GUI!
+
+And now, to update the image, you can click on it or _directly drag and drop_ another one!
 
 ## Todo / next steps
 
