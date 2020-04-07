@@ -45,15 +45,15 @@ export default (dat) => {
 
     handleFileUpload() {
       const file = this.__input.files[0];
-        if (!file) {
-          return;
-        }
+      if (!file) {
+        return;
+      }
       this.__fileReader.readAsDataURL(file);
     }
 
     handleFileLoaded() {
       this.handleFilePath(this.__fileReader.result);
-      }
+    }
 
     handleFilePath(filePath) {
       if (!filePath) {
@@ -67,8 +67,8 @@ export default (dat) => {
 
       if (this.__onChange) {
         this.__onChange.call(this, this.__image);
-        }
       }
+    }
 
     updateDisplay() {
       if (this.isModified()) {
@@ -117,6 +117,23 @@ export default (dat) => {
     dom.addClass(li, dat.GUI.CLASS_CONTROLLER_ROW);
     dom.addClass(li, 'image');
     // augmentController(gui, li, controller);
+
+    // Partial copy of augmentController() l.922 from dat.gui.js
+    controller.__li = li;
+    controller.__gui = this;
+    controller.name = function (name) {
+      this.__li.firstElementChild.firstElementChild.innerHTML = name;
+      return this;
+    };
+    controller.listen = function () {
+      this.__gui.listen(this);
+      return this;
+    };
+    controller.remove = function () {
+      this.__gui.remove(this);
+      return this;
+    };
+
     this.__controllers.push(controller);
 
     return controller;
