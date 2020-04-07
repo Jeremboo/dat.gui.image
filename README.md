@@ -42,7 +42,7 @@ And now, to update the image, you can click on it or _directly drag and drop_ an
 
 ## Todo / next steps
 
-- Make it works with the `augmentController()` & `recallSavedValue()` functions.
+- Make it works with the `recallSavedValue()` functions.
 
 - Once one of those PRs is merged, only export the ImageController class:
 

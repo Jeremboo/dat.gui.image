@@ -106,6 +106,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
 function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
@@ -146,53 +154,76 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
     var _super = _createSuper(ImageController);
 
     function ImageController(object, property) {
-      var _this2;
+      var _this;
 
       _classCallCheck(this, ImageController);
 
-      _this2 = _super.call(this, object, property);
+      _this = _super.call(this, object, property);
+      _this.__fileReader = new FileReader();
+      _this.__image = document.createElement('img');
+      _this.__imagePreview = document.createElement('img');
+      _this.__input = document.createElement('input');
+      _this.__image.src = object[property];
+      _this.__imagePreview.src = object[property];
+      _this.__input.type = 'file';
+      dom.bind(_this.__image, 'load', _this.handleImageLoaded.bind(_assertThisInitialized(_this)));
+      dom.bind(_this.__input, 'change', _this.handleFileUpload.bind(_assertThisInitialized(_this)));
+      dom.bind(_this.__fileReader, 'loadend', _this.handleFileLoaded.bind(_assertThisInitialized(_this)));
+      dom.addClass(_this.__imagePreview, 'preview');
 
-      var _fileReader = new FileReader();
+      _this.domElement.appendChild(_this.__imagePreview);
 
-      _fileReader.onloadend = onLoadEnd;
+      _this.domElement.appendChild(_this.__input);
 
-      var _this = _assertThisInitialized(_this2);
+      return _this;
+    }
 
-      _this2.__image = document.createElement('img');
-      _this2.__imagePreview = document.createElement('img');
-      _this2.__input = document.createElement('input');
-      _this2.__image.src = object[property];
-      _this2.__imagePreview.src = object[property];
-      _this2.__input.type = 'file';
-      dom.bind(_this2.__input, 'change', handleFileUpload);
-      dom.bind(_fileReader, 'onloadend', onLoadEnd);
-      dom.addClass(_this2.__imagePreview, 'preview');
-
-      function handleFileUpload() {
-        var file = _this.__input.files[0];
+    _createClass(ImageController, [{
+      key: "handleFileUpload",
+      value: function handleFileUpload() {
+        var file = this.__input.files[0];
 
         if (!file) {
           return;
         }
 
-        _fileReader.readAsDataURL(file);
+        this.__fileReader.readAsDataURL(file);
       }
+    }, {
+      key: "handleFileLoaded",
+      value: function handleFileLoaded() {
+        this.handleFilePath(this.__fileReader.result);
+      }
+    }, {
+      key: "handleFilePath",
+      value: function handleFilePath(filePath) {
+        if (!filePath) {
+          return;
+        }
 
-      function onLoadEnd() {
-        _this.__image.src = _fileReader.result;
-        _this.__imagePreview.src = _fileReader.result;
+        this.__image.src = filePath;
+      }
+    }, {
+      key: "handleImageLoaded",
+      value: function handleImageLoaded() {
+        this.__imagePreview.src = this.__image.src;
 
-        if (_this.__onChange) {
-          _this.__onChange.call(_this, _this.__image);
+        if (this.__onChange) {
+          this.__onChange.call(this, this.__image);
         }
       }
+    }, {
+      key: "updateDisplay",
+      value: function updateDisplay() {
+        if (this.isModified()) {
+          var newValue = this.getValue();
+          this.handleFilePath(newValue);
+          this.initialValue = newValue;
+        }
 
-      _this2.domElement.appendChild(_this2.__imagePreview);
-
-      _this2.domElement.appendChild(_this2.__input);
-
-      return _this2;
-    }
+        return _get(_getPrototypeOf(ImageController.prototype), "updateDisplay", this).call(this);
+      }
+    }]);
 
     return ImageController;
   }(dat.controllers.Controller);
@@ -232,6 +263,27 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
     dom.addClass(li, dat.GUI.CLASS_CONTROLLER_ROW);
     dom.addClass(li, 'image'); // augmentController(gui, li, controller);
+    // Partial copy of augmentController() l.922 from dat.gui.js
+
+    controller.__li = li;
+    controller.__gui = this;
+
+    controller.name = function (name) {
+      this.__li.firstElementChild.firstElementChild.innerHTML = name;
+      return this;
+    };
+
+    controller.listen = function () {
+      this.__gui.listen(this);
+
+      return this;
+    };
+
+    controller.remove = function () {
+      this.__gui.remove(this);
+
+      return this;
+    };
 
     this.__controllers.push(controller);
 
