@@ -1,6 +1,9 @@
 # dat.GUI.image
 
-Plugin to give you another GUI function called `addImage()`.
+
+**[IMPORTANT] This plugin is temporary! It's waiting to me merged: https://github.com/dataarts/dat.gui/pull/265**
+
+Give you another GUI function called `addImage()`.
 
 It allows you to update new images in real time without recompiling your code or add them into your project.
 
