@@ -48,6 +48,7 @@ export default (dat) => {
       if (!file) {
         return;
       }
+      this.__input.value = '';
       this.__fileReader.readAsDataURL(file);
     }
 

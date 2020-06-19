@@ -187,6 +187,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
           return;
         }
 
+        this.__input.value = '';
+
         this.__fileReader.readAsDataURL(file);
       }
     }, {
