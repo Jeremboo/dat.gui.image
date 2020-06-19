@@ -1,5 +1,4 @@
 import './style.scss';
-
 /**
  * dat.gui.image javascript plugin for dat.gui
  * @author jeremboo https://jeremieboulay.fr
@@ -22,6 +21,8 @@ export default (dat) => {
   class ImageController extends dat.controllers.Controller {
     constructor(object, property) {
       super(object, property);
+
+      this.__onChangeFirstTime = true;
 
       this.__fileReader = new FileReader();
 
@@ -67,7 +68,8 @@ export default (dat) => {
       this.__imagePreview.src = this.__image.src;
 
       if (this.__onChange) {
-        this.__onChange.call(this, this.__image);
+        this.__onChange.call(this, this.__image, this.__onChangeFirstTime);
+        this.__onChangeFirstTime = false;
       }
     }
 

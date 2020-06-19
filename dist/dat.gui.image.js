@@ -159,6 +159,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
       _classCallCheck(this, ImageController);
 
       _this = _super.call(this, object, property);
+      _this.__onChangeFirstTime = true;
       _this.__fileReader = new FileReader();
       _this.__image = document.createElement('img');
       _this.__imagePreview = document.createElement('img');
@@ -211,7 +212,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
         this.__imagePreview.src = this.__image.src;
 
         if (this.__onChange) {
-          this.__onChange.call(this, this.__image);
+          this.__onChange.call(this, this.__image, this.__onChangeFirstTime);
+
+          this.__onChangeFirstTime = false;
         }
       }
     }, {

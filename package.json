@@ -1,6 +1,6 @@
 {
   "name": "dat.gui.image",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Plugin to give you another GUI function called",
   "main": "dist/dat.gui.image.js",
   "scripts": {

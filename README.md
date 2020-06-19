@@ -34,7 +34,7 @@ const PROPS = {
 const gui = new dat.GUI();
 
 // Now, you can use it as a traditional gui method!
-gui.addImage(PROPS, 'texturePath').onChange((image) => {
+gui.addImage(PROPS, 'texturePath').onChange((image: HTMLImageElement, firstTime: boolean) => {
   body.append(image);
 });
 ```
